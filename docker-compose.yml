@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: censudex_mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_DATABASE: censudex_products
+    volumes:
+      - mongo_data:/data/db
+
+  products-service:
+    build: .
+    container_name: censudex_products_service
+    ports:
+      - "5000:8080"
+    depends_on:
+      - mongo
+    environment:
+      - DOTNET_USE_POLLING_FILE_WATCHER=1
+      - ASPNETCORE_URLS=http://+:8080
+      - ConnectionStrings__MongoDb=mongodb://mongo:27017
+      - MongoDbSettings__TicketServiceDb=perla_metro_tickets
+
+volumes:
+  mongo_data:
