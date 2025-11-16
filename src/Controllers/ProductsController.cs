@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace censudex_products_service.src.Controllers
 {
     [ApiController]
-    [Route("products/[controller]")]
+    [Route("[controller]")]
     public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService;
@@ -20,7 +20,7 @@ namespace censudex_products_service.src.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] CreateProductDto createProductDto)
+        public async Task<IActionResult> Create([FromForm] CreateProductDto createProductDto)
         {
             try
             {
