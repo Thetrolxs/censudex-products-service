@@ -15,6 +15,12 @@ WORKDIR /app
 
 COPY --from=build /app/publish .
 
-ENV ASPNETCORE_URLS=http://+:$PORT
+# Exponer puertos:
+#  - 50051 -> gRPC (HTTP/2) interno/externo
+#  - 8080  -> HTTP/REST (si tu app usa 8080)
+EXPOSE 50051
+EXPOSE 8080
+
+ENV ASPNETCORE_URLS="http://+:8080;http://+:50051"
 
 ENTRYPOINT ["dotnet", "censudex-products-service.dll"]

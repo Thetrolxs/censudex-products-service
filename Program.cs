@@ -15,6 +15,28 @@ builder.Services.AddControllers();
 
 builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
 
+builder.Services.AddGrpc();
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenAnyIP(50051, listenOptions =>
+    {
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http2;
+    });
+
+    // opcional: puerto REST
+    options.ListenAnyIP(5000, listenOptions =>
+    {
+        listenOptions.Protocols = Microsoft.AspNetCore.Server.Kestrel.Core.HttpProtocols.Http1;
+    });
+});
+
+builder.Services.AddGrpc(options =>
+{
+    options.MaxReceiveMessageSize = 10 * 1024 * 1024; // 20 MB, por ejemplo
+});
+
+
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
 
 var cfg = builder.Configuration.GetSection("MongoDbSettings").Get<MongoDbSettings>();
@@ -57,6 +79,7 @@ builder.Services.AddScoped<IMapperService, MapperService>();
 
 var app = builder.Build();
 
+app.MapGrpcService<ProductsGrpcService>();
 app.MapControllers();
 
 app.Run();

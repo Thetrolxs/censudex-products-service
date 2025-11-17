@@ -16,14 +16,15 @@ services:
     build: .
     container_name: censudex_products_service
     ports:
-      - "5000:8080"
+      - "50051:50051"  # gRPC (host:container)
+      - "8080:8080"    # REST (opcional)
     depends_on:
       - mongo
     environment:
       - DOTNET_USE_POLLING_FILE_WATCHER=1
-      - ASPNETCORE_URLS=http://+:8080
+      - ASPNETCORE_URLS=http://+:8080;http://+:50051
       - ConnectionStrings__MongoDb=mongodb://mongo:27017
-      - MongoDbSettings__TicketServiceDb=perla_metro_tickets
+      - MongoDbSettings__ProductServiceDb=censudex_products_service
 
 volumes:
   mongo_data:
