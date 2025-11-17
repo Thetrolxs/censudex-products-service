@@ -21,6 +21,6 @@ COPY --from=build /app/publish .
 EXPOSE 50051
 EXPOSE 8080
 
-ENV ASPNETCORE_URLS="http://+:8080;http://+:50051"
+ENV ASPNETCORE_URLS="http://+:8080;http://+:50052"
 
 ENTRYPOINT ["dotnet", "censudex-products-service.dll"]

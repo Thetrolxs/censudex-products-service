@@ -22,7 +22,7 @@ services:
       - mongo
     environment:
       - DOTNET_USE_POLLING_FILE_WATCHER=1
-      - ASPNETCORE_URLS=http://+:8080;http://+:50051
+      - ASPNETCORE_URLS=http://+:8080;http://+:50052
       - ConnectionStrings__MongoDb=mongodb://mongo:27017
       - MongoDbSettings__ProductServiceDb=censudex_products_service
 
